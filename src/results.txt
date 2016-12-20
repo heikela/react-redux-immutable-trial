@@ -1,0 +1,4 @@
+Naive code, svg, scaling, circles
+
+setinteral 10
+when at 6600 items, approx 3 items / sec
