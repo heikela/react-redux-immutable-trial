@@ -2,3 +2,6 @@ Naive code, svg, scaling, circles
 
 setinteral 10
 when at 6600 items, approx 3 items / sec
+
+vnode walk without shouldComponentUpdate
+clear slowdown, down to at most 3 items / sec by 2000 items

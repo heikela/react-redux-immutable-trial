@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import { List } from 'immutable';
+import { List } from '../immutable-js/dist/immutable';
 
 const initialState = {
   chartItems: List(),
@@ -32,4 +32,4 @@ const addPoint = () => {
   });
 };
 
-window.setInterval(addPoint, 1000);
+window.setInterval(addPoint, 10);
