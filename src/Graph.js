@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from '../immutable-js/dist/immutable.js';
 
-const GraphContainer = (props) => {
-  const node = props.node;
-  const level = props.level;
-  const offset = props.offset;
-  const left = props.left;
-  const right = props.right;
-  /* eslint-disable no-use-before-define */
-  const elements = graphElementsFromNode(node, offset, level, left, right);
-  /* eslint-enable no-use-before-define */
-  return (<g key={props.offset}>
-    {elements}
-  </g>);
+class GraphContainer extends Component {
+  render() {
+    const { node, level, offset, left, right } = this.props;
+    /* eslint-disable no-use-before-define */
+    const elements = graphElementsFromNode(node, offset, level, left, right);
+    /* eslint-enable no-use-before-define */
+    return (<g key={offset}>
+      {elements}
+    </g>);
+  };
+
+  shouldComponentUpdate(newProps) {
+    return newProps.node != this.props.node;
+  }
 };
 
 const GraphSegment = (props) => {
@@ -25,8 +27,8 @@ const graphElementsFromWalk = (walkFunc) => {
   var result = [];
   walkFunc((item, offset, level, left, right) => {
   //  console.log('walkFunc called', item, offset, level, left, right);
-    const elementType = level < 0 ? GraphSegment : GraphContainer;
-    result.push(elementType({node: item, level: level, offset: offset, left: left, right: right, key: offset}));
+    const ElementType = level < 0 ? GraphSegment : GraphContainer;
+    result.push(<ElementType node={item} level={level} offset={offset} left={left} right={right} key={offset} />);
   });
   return result;
 }
