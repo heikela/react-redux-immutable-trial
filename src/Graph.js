@@ -51,7 +51,7 @@ class GraphView extends Component {
     const scale = "scale(" + xScale + " 1)";
 //    console.log(items);
     return (
-      <svg viewBox="0 0 100 100">
+      <svg viewBox="0 0 100 100" onClick={this.props.addThousand}>
       <g stroke="red" fill="none" transform={scale}>
         {graphElementsFromList(items)}
         </g>
@@ -64,5 +64,8 @@ export const Graph = connect(
   state => ({
     chartItems: state.chartItems,
     prevItem: state.prevItem
+  }),
+  dispatch => ({
+    addThousand: () => dispatch({type: 'addThousand'})
   })
 )(GraphView);

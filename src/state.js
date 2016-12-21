@@ -9,17 +9,28 @@ const initialState = {
   }
 };
 
+const genItem = (prevItem) => ({
+  x: prevItem.x + 1,
+  y: prevItem.y + Math.random() - 0.5
+});
+
+const addItems = (state, count) => {
+  var item = state.prevItem;
+  var items = state.chartItems;
+  for (var i = 0; i < count; ++i) {
+    item = genItem(item);
+    items = items.push(item);
+  };
+  return ({
+    chartItems: items,
+    prevItem: item
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'addItem':
-      const newItem = {
-        x: state.prevItem.x + 1,
-        y: state.prevItem.y + Math.random() - 0.5
-      };
-      return ({
-        chartItems: state.chartItems.push(newItem),
-        prevItem: newItem
-      });
+    case 'addItem': return addItems(state, 1);
+    case 'addThousand': return addItems(state, 1000);
     default: return state;
   }
 };

@@ -19,3 +19,6 @@ at 8000 items:
 around 17k items, slowdown to < 20 items per sec.
 seems like opening dev tools slows things down further so hard to say without
 actual instrumentation.
+
+at 46k items, updates had slowed down to 2 items per sec with devtools open, and
+timeline view was becoming unresponsive
