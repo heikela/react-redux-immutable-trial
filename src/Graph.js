@@ -14,7 +14,7 @@ class GraphContainer extends Component {
   };
 
   shouldComponentUpdate(newProps) {
-    return newProps.node != this.props.node;
+    return newProps.node !== this.props.node;
   }
 };
 
