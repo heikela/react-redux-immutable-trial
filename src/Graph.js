@@ -2,41 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-class GraphContainer extends Component {
-  render() {
-    const { node, offset, walkFunc } = this.props;
-    /* eslint-disable no-use-before-define */
-    const elements = graphElementsFromNode(node, offset, walkFunc);
-    /* eslint-enable no-use-before-define */
-    return (<g key={offset}>
-      {elements}
-    </g>);
-  };
-
-  shouldComponentUpdate(newProps) {
-    return newProps.node !== this.props.node;
-  }
-};
-
-const GraphSegment = (props) => {
-  const node = props.node;
-  return (<circle cx={node.x} cy={node.y} r="1" fill={node.c} key={props.offset} />);
-};
-
-const graphElementsFromWalk = (walkFunc) => {
-  var result = [];
-  walkFunc((item, offset, walkFunc) => {
-    const ElementType = walkFunc ? GraphContainer : GraphSegment;
-    result.push(<ElementType node={item} walkFunc={walkFunc} offset={offset} key={offset}/>);
-  });
-  return result;
-}
-
-const graphElementsFromList = (list) =>
-  graphElementsFromWalk((fn) => list.walkTree(fn));
-
-const graphElementsFromNode = (node, offset, walkFunc) =>
-  graphElementsFromWalk((fn) => walkFunc(fn, node, offset));
+import { graphElementsFromList } from './Chart';
 
 const ticks = (limit) => {
   const tickSize = [1000000, 200000, 100000, 20000, 10000, 2000, 1000, 200, 100, 10, 1, 0.1, 0.01, 0.001, 0.0001].find(tick => tick < limit);
