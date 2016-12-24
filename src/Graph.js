@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { List } from '../immutable-js/dist/immutable.js';
 import _ from 'lodash';
 
 class GraphContainer extends Component {
@@ -68,7 +67,7 @@ class GraphView extends Component {
     });
 
     return (
-      <svg width = "600" height="600" viewBox="0 0 200 200" onClick={this.props.addThousand}>
+      <svg width="600" height="600" viewBox="0 0 200 200" onClick={this.props.addThousand}>
       <g stroke="black" fill="black" strokeWidth="0.5">
         <line x1="0" y1="5" x2="180" y2="5" />
         {axisTicks}
