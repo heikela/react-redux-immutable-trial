@@ -3,43 +3,39 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { graphElementsFromList } from './Chart';
+import { XAxis, YAxis } from './Axis';
 
-const ticks = (limit) => {
-  const tickSize = [1000000, 200000, 100000, 20000, 10000, 2000, 1000, 200, 100, 10, 1, 0.1, 0.01, 0.001, 0.0001].find(tick => tick < limit);
-  if (!tickSize) return [];
-  return _.range(0, limit, tickSize);
-}
+const calculateTransform = (outer1, outer2, inner1, inner2) => {
+  const dInner = inner2 - inner1;
+  const dOuter = outer2 - outer1;
+  const factor = dOuter / dInner;
+  return {
+    factor: factor,
+    constant: outer1 - inner1 * factor
+  }
+};
 
 class GraphView extends Component {
   render() {
+    const {x1, y1, x2, y2} = this.props;
+    const {xMin, xMax, yMin, yMax} = this.props;
     const items = this.props.chartItems;
     const lastItem = this.props.prevItem;
     const lastX = lastItem ? lastItem.x : 0;
-    const xLimit = Math.max(180, lastX);
-    const xScale = 180.0/xLimit;
-//    const transform = "scale(" + xScale + " 1)";
-    const xTranslation = -Math.max(0, lastX - 180);
-    const transform = "translate(" + xTranslation + ")";
+    const xLimit = Math.max(200, lastX);
+    const actualXMax = xMax ? xMax : xLimit;
 
-    const axisTicks = ticks(xLimit).map(x => {
-      const scaledX = x * xScale;
-      return (<g key={x}>
-        <line x1={scaledX} y1="0" x2={scaledX} y2="10" />
-        <text x={scaledX} y="20" fontSize="10">
-          {x}
-        </text>
-      </g>
-      );
-    });
+    const xTransform = calculateTransform(x1, x2, 0, actualXMax);
+    const yTransform = calculateTransform(y1, y2, yMin, yMax);
+    const transform = 'matrix(' + xTransform.factor + ',0,0,'
+      + yTransform.factor + ',' + xTransform.constant + ',' + yTransform.constant + ')';
 
     return (
       <svg width="600" height="600" viewBox="0 0 200 200" onClick={this.props.addThousand}>
-      <g stroke="black" fill="black" strokeWidth="0.5">
-        <line x1="0" y1="5" x2="180" y2="5" />
-        {axisTicks}
-      </g>
-      <g stroke="none" fill="red" transform={transform}>
-        {graphElementsFromList(items)}
+        <YAxis x={x1} width={10} yMin={y1} yMax={y2} yMinVal={yMin} yMaxVal={yMax} />
+        <XAxis y={y1} width={10} xMin={x1} xMax={x2} xMinVal={xMin} xMaxVal={actualXMax} />
+        <g stroke="none" fill="red" transform={transform}>
+          {graphElementsFromList(items)}
         </g>
       </svg>
     )

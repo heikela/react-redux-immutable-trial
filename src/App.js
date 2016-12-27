@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <Provider store={store}>
-          <Graph />
+          <Graph x1={0} y1={0} x2={200} y2={200} xMin={0} yMin={0} yMax={200} />
         </Provider>
       </div>
     );
