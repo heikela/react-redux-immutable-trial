@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { graphElementsFromList } from './Chart';
+import { seriesElementsFromList } from './Series';
 import { XAxis, YAxis } from './Axis';
 
 const calculateTransform = (outer1, outer2, inner1, inner2) => {
@@ -35,7 +35,7 @@ class GraphView extends Component {
         <YAxis x={x1} width={10} yMin={y1} yMax={y2} yMinVal={yMin} yMaxVal={yMax} />
         <XAxis y={y1} width={10} xMin={x1} xMax={x2} xMinVal={xMin} xMaxVal={actualXMax} />
         <g stroke="none" fill="red" transform={transform}>
-          {graphElementsFromList(items)}
+          {seriesElementsFromList(items)}
         </g>
       </g>
     )

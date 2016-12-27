@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-class GraphContainer extends Component {
+class SeriesContainer extends Component {
   render() {
     const { node, offset, walkFunc } = this.props;
     /* eslint-disable no-use-before-define */
-    const elements = graphElementsFromNode(node, offset, walkFunc);
+    const elements = seriesElementsFromNode(node, offset, walkFunc);
     /* eslint-enable no-use-before-define */
     return (<g key={offset}>
       {elements}
@@ -16,22 +16,22 @@ class GraphContainer extends Component {
   }
 };
 
-const GraphSegment = (props) => {
+const SeriesSegment = (props) => {
   const node = props.node;
   return (<circle cx={node.x} cy={node.y} r="1" fill={node.c} key={props.offset} />);
 };
 
-const graphElementsFromWalk = (walkFunc) => {
+const seriesElementsFromWalk = (walkFunc) => {
   var result = [];
   walkFunc((item, offset, walkFunc) => {
-    const ElementType = walkFunc ? GraphContainer : GraphSegment;
+    const ElementType = walkFunc ? SeriesContainer : SeriesSegment;
     result.push(<ElementType node={item} walkFunc={walkFunc} offset={offset} key={offset}/>);
   });
   return result;
 }
 
-export const graphElementsFromList = (list) =>
-  graphElementsFromWalk((fn) => list.walkTree(fn));
+export const seriesElementsFromList = (list) =>
+  seriesElementsFromWalk((fn) => list.walkTree(fn));
 
-const graphElementsFromNode = (node, offset, walkFunc) =>
-  graphElementsFromWalk((fn) => walkFunc(fn, node, offset));
+const seriesElementsFromNode = (node, offset, walkFunc) =>
+  seriesElementsFromWalk((fn) => walkFunc(fn, node, offset));
