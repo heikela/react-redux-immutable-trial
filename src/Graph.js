@@ -31,13 +31,13 @@ class GraphView extends Component {
       + yTransform.factor + ',' + xTransform.constant + ',' + yTransform.constant + ')';
 
     return (
-      <svg width="600" height="600" viewBox="0 0 200 200" onClick={this.props.addThousand}>
+       <g>
         <YAxis x={x1} width={10} yMin={y1} yMax={y2} yMinVal={yMin} yMaxVal={yMax} />
         <XAxis y={y1} width={10} xMin={x1} xMax={x2} xMinVal={xMin} xMaxVal={actualXMax} />
         <g stroke="none" fill="red" transform={transform}>
           {graphElementsFromList(items)}
         </g>
-      </svg>
+      </g>
     )
   }
 }
@@ -46,8 +46,5 @@ export const Graph = connect(
   state => ({
     chartItems: state.chart.chartItems,
     prevItem: state.chart.prevItem
-  }),
-  dispatch => ({
-    addThousand: () => dispatch({type: 'addItems', payload: 1000})
   })
 )(GraphView);
