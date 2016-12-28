@@ -23,8 +23,7 @@ const addItems = (state, count) => {
   };
   return ({
     chartItems: items,
-    prevItem: item,
-    timing: state.timing
+    prevItem: item
   });
 };
 
@@ -37,8 +36,7 @@ const recolor = (state) => {
   const updatedItem = {...item, c: item.c === 'red' ? 'blue' : 'red'};
   return ({
     chartItems: items.set(index, updatedItem),
-    prevItem: state.prevItem,
-    timing: state.timing,
+    prevItem: state.prevItem
   });
 }
 
