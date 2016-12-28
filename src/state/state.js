@@ -1,5 +1,6 @@
 import { createStore, combineReducers } from 'redux';
-import { List } from '../immutable-js/dist/immutable';
+import { List } from '../../immutable-js/dist/immutable';
+import { timing } from './timing';
 
 const initialState = {
   chartItems: List(),
@@ -8,39 +9,6 @@ const initialState = {
     y: 100
   },
 };
-
-const initialTimingState = {
-  prevTiming: window.performance.now(),
-  count: 0
-};
-
-const logPerformance = (state) => {
-  const seconds = (window.performance.now() - state.prevTiming) / 1000;
-  const operations = state.count;
-  const operationsPerSecond = operations / seconds;
-  console.log(operations + " operations in " + seconds + " s = " + operationsPerSecond + " operations/s");
-  return ({
-    prevTiming: window.performance.now(),
-    count: 0
-  });
-};
-
-const timing = (state = initialTimingState, action) => {
-  switch (action.type) {
-    case 'recolor': // fall through
-    case 'addItems': {
-      const newCount = state.count + 1;
-      const stateWithUpdatedCount = {prevTiming: state.prevTiming, count: newCount};
-      if (newCount % 1000 === 0) {
-        return logPerformance(stateWithUpdatedCount);
-      } else {
-        return stateWithUpdatedCount;
-      }
-    }
-    case 'logPerformance': return logPerformance(state);
-    default: return state;
-  }
-}
 
 const genItem = (prevItem) => ({
   x: prevItem.x + 1,

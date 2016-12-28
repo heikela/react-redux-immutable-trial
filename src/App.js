@@ -3,7 +3,7 @@ import { Graph } from './Graph';
 import { Provider } from 'react-redux';
 
 import ControlButton from './ControlButton';
-import { store } from './state';
+import { store } from './state/state';
 
 class App extends Component {
   render() {
