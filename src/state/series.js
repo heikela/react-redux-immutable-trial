@@ -18,7 +18,7 @@ const updateBounds = (bounds, newItem) => ({
   minX: bounds.minX < newItem.x ? bounds.minX : newItem.x,
   maxX: bounds.maxX > newItem.x ? bounds.maxX : newItem.x,
   minY: bounds.minY < newItem.y ? bounds.minY : newItem.y,
-  maxY: bounds.maxY < newItem.y ? bounds.maxY : newItem.y,
+  maxY: bounds.maxY > newItem.y ? bounds.maxY : newItem.y,
 });
 
 const genItem = (prevItem) => ({
