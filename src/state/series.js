@@ -1,5 +1,7 @@
 import { List, Map } from '../../immutable-js/dist/immutable';
 
+export const getBounds = (state) => state.get('bounds');
+
 const initialState = Map({
   chartItems: List(),
   prevItem: {

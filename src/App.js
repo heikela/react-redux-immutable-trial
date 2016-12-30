@@ -11,7 +11,7 @@ class App extends Component {
       <Provider store={store}>
         <div className="App">
           <svg width="600" height="600" viewBox="0 0 200 200">
-            <Graph x1={0} y1={0} x2={200} y2={200} xMin={0} yMin={0} yMax={200} />
+            <Graph x1={0} y1={0} x2={200} y2={200} />
           </svg>
           <p>
             <ControlButton action={{type:'addItems', payload:1000}} >
