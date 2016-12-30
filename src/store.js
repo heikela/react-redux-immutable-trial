@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import { timing } from './timing';
-import { series } from './series';
+import { timing } from './state/timing';
+import { series } from './series/series';
 import { Map } from 'immutable';
 
 const reducer = combineReducers({

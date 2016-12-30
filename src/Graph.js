@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { seriesElementsFromList } from './Series';
-import { getBounds } from './state/series';
+import { seriesElementsFromList } from './series/SeriesComponent';
+import { getBounds } from './series/series';
 import { XAxis, YAxis } from './Axis';
 
 const calculateTransform = (outer1, outer2, inner1, inner2) => {
