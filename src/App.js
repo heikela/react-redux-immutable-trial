@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Graph } from './Graph';
+import { Graph } from './graph/Graph';
 import { Provider } from 'react-redux';
 
 import ControlButton from './ControlButton';
