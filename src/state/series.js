@@ -1,12 +1,25 @@
-import { List } from '../../immutable-js/dist/immutable';
+import { List, Map } from '../../immutable-js/dist/immutable';
 
-const initialState = {
+const initialState = Map({
   chartItems: List(),
   prevItem: {
     x: 0,
     y: 100
   },
-};
+  bounds: {
+    minX: Infinity,
+    maxX: -Infinity,
+    minY: Infinity,
+    maxY: -Infinity
+  }
+});
+
+const updateBounds = (bounds, newItem) => ({
+  minX: bounds.minX < newItem.x ? bounds.minX : newItem.x,
+  maxX: bounds.maxX > newItem.x ? bounds.maxX : newItem.x,
+  minY: bounds.minY < newItem.y ? bounds.minY : newItem.y,
+  maxY: bounds.maxY < newItem.y ? bounds.maxY : newItem.y,
+});
 
 const genItem = (prevItem) => ({
   x: prevItem.x + 1,
@@ -15,29 +28,29 @@ const genItem = (prevItem) => ({
 });
 
 const addItems = (state, count) => {
-  var item = state.prevItem;
-  var items = state.chartItems;
+  var item = state.get('prevItem');
+  var items = state.get('chartItems');
+  var updatedBounds = state.get('bounds');
   for (var i = 0; i < count; ++i) {
     item = genItem(item);
     items = items.push(item);
+    updatedBounds = updateBounds(updatedBounds, item);
   };
-  return ({
+  return Map({
     chartItems: items,
-    prevItem: item
+    prevItem: item,
+    bounds: updatedBounds
   });
 };
 
 const recolor = (state) => {
-  const items = state.chartItems;
+  const items = state.get('chartItems');
   const length = items.size;
   if (length < 10) return state;
   const index = Math.floor(Math.random() * (length - 2)) + 1;
   const item = items.get(index);
   const updatedItem = {...item, c: item.c === 'red' ? 'blue' : 'red'};
-  return ({
-    chartItems: items.set(index, updatedItem),
-    prevItem: state.prevItem
-  });
+  return state.setIn(['chartItems', index], updatedItem);
 }
 
 export const series = (state = initialState, action) => {

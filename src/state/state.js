@@ -1,13 +1,15 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import { timing } from './timing';
 import { series } from './series';
+import { Map } from 'immutable';
 
 const reducer = combineReducers({
   timing: timing,
   series: series
 });
 
-export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+export const store = createStore(reducer, Map(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 /*
 const addPoints = (count) => function dispatchAddPoints() {

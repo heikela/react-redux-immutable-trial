@@ -44,7 +44,7 @@ class GraphView extends Component {
 
 export const Graph = connect(
   state => ({
-    chartItems: state.series.chartItems,
-    prevItem: state.series.prevItem
+    chartItems: state.getIn(['series', 'chartItems']),
+    prevItem: state.getIn(['series', 'prevItem'])
   })
 )(GraphView);
