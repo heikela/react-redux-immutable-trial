@@ -1,9 +1,27 @@
 import React, { Component } from 'react';
-import { Graph } from './graph/Graph';
+import GraphComponent from './graph/Graph';
 import { Provider } from 'react-redux';
 
 import ControlButton from './ControlButton';
 import { store } from './store';
+
+import { connect } from 'react-redux';
+
+import { getBounds } from './series/series';
+
+const Graph = connect(
+  state => {
+    const {minX, maxX, minY, maxY} = getBounds(state.get('series'));
+    return {
+      chartItems: state.getIn(['series', 'chartItems']),
+      prevItem: state.getIn(['series', 'prevItem']),
+      xMin: minX < 0 ? minX : 0,
+      xMax: maxX > 10 ? maxX : 10,
+      yMin: 0 <= minY ? 0 : minY,
+      yMax: 200 >= maxY ? 200 : maxY
+    };
+  }
+)(GraphComponent);
 
 class App extends Component {
   render() {

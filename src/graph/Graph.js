@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { seriesElementsFromList } from '../series/SeriesComponent';
-import { getBounds } from '../series/series';
 import { XAxis, YAxis } from './Axis';
 
 const calculateTransform = (outer1, outer2, inner1, inner2) => {
@@ -16,7 +14,7 @@ const calculateTransform = (outer1, outer2, inner1, inner2) => {
   }
 };
 
-class GraphView extends Component {
+class Graph extends Component {
   render() {
     const {x1, y1, x2, y2} = this.props;
     const {xMin, xMax, yMin, yMax} = this.props;
@@ -39,16 +37,4 @@ class GraphView extends Component {
   }
 }
 
-export const Graph = connect(
-  state => {
-    const {minX, maxX, minY, maxY} = getBounds(state.get('series'));
-    return {
-      chartItems: state.getIn(['series', 'chartItems']),
-      prevItem: state.getIn(['series', 'prevItem']),
-      xMin: minX < 0 ? minX : 0,
-      xMax: maxX > 10 ? maxX : 10,
-      yMin: 0 <= minY ? 0 : minY,
-      yMax: 200 >= maxY ? 200 : maxY
-    };
-  }
-)(GraphView);
+export default Graph;
