@@ -1,6 +1,14 @@
 import { List, Map } from '../../immutable-js/dist/immutable';
 
-export const getBounds = (state) => state.get('bounds');
+export const getBounds = (state) => {
+  const bounds = state.get('bounds');
+  return {
+    xMin: bounds.minX,
+    xMax: bounds.maxX,
+    yMin: bounds.minY,
+    yMax: bounds.maxY
+  };
+};
 
 const initialState = Map({
   chartItems: List(),

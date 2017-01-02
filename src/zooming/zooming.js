@@ -62,10 +62,10 @@ const zoomByPercent = (state, percent) => {
 };
 
 const clampToRightEdge = (state, bounds) => {
-  const overflow = state.get('xMax') - bounds.maxX;
+  const overflow = state.get('xMax') - bounds.xMax;
   if (overflow > 0) {
     return state
-      .set('xMax', bounds.maxX)
+      .set('xMax', bounds.xMax)
       .set('xMin', state.get('xMin') - overflow)
       .set('followingRightEdge', true);
   } else {
@@ -74,15 +74,15 @@ const clampToRightEdge = (state, bounds) => {
 }
 
 const clampToLeftEdge = (state, bounds) => {
-  const overflow = bounds.minX - state.get('xMin');
+  const overflow = bounds.xMin - state.get('xMin');
   if (overflow > 0) {
     if (state.followingRightEdge) {
       return state
-        .set('xMin', bounds.minX)
+        .set('xMin', bounds.xMin)
         .set('followingLeftEdge', true);
     } else {
       return state
-        .set('xMin', bounds.minX)
+        .set('xMin', bounds.xMin)
         .set('xMax', state.get('xMax') + overflow)
         .set('followingLeftEdge', true);
     }
@@ -96,17 +96,17 @@ const updateByFollowing = (state, bounds) => {
   const followRight = state.get('followingRightEdge');
   if (followLeft && followRight) {
     return state
-      .set('xMin', bounds.minX)
-      .set('xMax', bounds.maxX)
+      .set('xMin', bounds.xMin)
+      .set('xMax', bounds.xMax)
   } else if (followLeft) {
-    const deltaX = bounds.minX - state.get('xMin');
+    const deltaX = bounds.xMin - state.get('xMin');
     return state
-      .set('xMin', bounds.minX)
+      .set('xMin', bounds.xMin)
       .update('xMax', x => x + deltaX);
   } else if (followRight) {
-    const deltaX = bounds.maxX - state.get('xMax');
+    const deltaX = bounds.xMax - state.get('xMax');
     return state
-      .set('xMax', bounds.maxX)
+      .set('xMax', bounds.xMax)
       .update('xMin', x => x + deltaX);
   } else {
     return state;

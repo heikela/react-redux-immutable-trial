@@ -8,13 +8,13 @@ export const zoomConnector = connectAdvanced(
   dispatch => (state, ownProps) => {
     const series = ownProps.series(state);
     const seriesBounds = getBounds(series);
-    const {minY, maxY} = seriesBounds;
+    const {yMin, yMax} = seriesBounds;
     const {xMin, xMax} = getZoomBounds(ownProps.zooming(state), seriesBounds);
     return Object.assign({}, ownProps,
       {
         chartItems: series.get('chartItems'),
-        yMin: 0 <= minY ? 0 : minY,
-        yMax: 200 >= maxY ? 200 : maxY,
+        yMin: 0 <= yMin ? 0 : yMin,
+        yMax: 200 >= yMax ? 200 : yMax,
         xMin, xMax,
         onWheel: (e) => {
           e.preventDefault();
