@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import { seriesElementsFromList } from '../series/SeriesComponent';
 import { XAxis, YAxis } from './Axis';
 
 const calculateTransform = (outer1, outer2, inner1, inner2) => {
@@ -16,9 +15,12 @@ const calculateTransform = (outer1, outer2, inner1, inner2) => {
 
 class Graph extends Component {
   render() {
+    const {width, height} = this.props;
     const {x1, y1, x2, y2} = this.props;
     const {xMin, xMax, yMin, yMax} = this.props;
     const items = this.props.chartItems;
+
+    const viewBox = '' + x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
 
     const xTransform = calculateTransform(x1, x2, xMin, xMax);
     const yTransform = calculateTransform(y1, y2, yMin, yMax);
@@ -26,13 +28,15 @@ class Graph extends Component {
       + yTransform.factor + ',' + xTransform.constant + ',' + yTransform.constant + ')';
 
     return (
-       <g>
+      <svg width={width} height={height} viewBox={viewBox} pointerEvents="all"
+        onWheel={this.props.onWheel}>
+        <rect x={x1} y={y1} width={x2-x1} height={y2-y1} fill="blue" visibility="hidden"/>
         <YAxis x={x1} width={10} yMin={y1} yMax={y2} yMinVal={yMin} yMaxVal={yMax} />
         <XAxis y={y1} width={10} xMin={x1} xMax={x2} xMinVal={xMin} xMaxVal={xMax} />
         <g stroke="none" fill="red" transform={transform}>
-          {seriesElementsFromList(items)}
+          {this.props.children}
         </g>
-      </g>
+      </svg>
     )
   }
 }

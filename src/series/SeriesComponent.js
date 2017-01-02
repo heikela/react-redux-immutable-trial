@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class SeriesContainer extends Component {
+class SeriesSegment extends Component {
   render() {
     const { node, offset, walkFunc } = this.props;
     /* eslint-disable no-use-before-define */
@@ -16,7 +16,7 @@ class SeriesContainer extends Component {
   }
 };
 
-const SeriesSegment = (props) => {
+const SeriesElement = (props) => {
   const node = props.node;
   return (<circle cx={node.x} cy={node.y} r="1" fill={node.c} key={props.offset} />);
 };
@@ -24,14 +24,20 @@ const SeriesSegment = (props) => {
 const seriesElementsFromWalk = (walkFunc) => {
   var result = [];
   walkFunc((item, offset, walkFunc) => {
-    const ElementType = walkFunc ? SeriesContainer : SeriesSegment;
+    const ElementType = walkFunc ? SeriesSegment : SeriesElement;
     result.push(<ElementType node={item} walkFunc={walkFunc} offset={offset} key={offset}/>);
   });
   return result;
 }
 
-export const seriesElementsFromList = (list) =>
+const seriesElementsFromList = (list) =>
   seriesElementsFromWalk((fn) => list.walkTree(fn));
 
 const seriesElementsFromNode = (node, offset, walkFunc) =>
   seriesElementsFromWalk((fn) => walkFunc(fn, node, offset));
+
+export const SeriesComponent = ({items}) => (
+  <g>
+    {seriesElementsFromList(items)}
+  </g>
+);
