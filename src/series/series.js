@@ -1,34 +1,71 @@
 import { List, Map } from '../../immutable-js/dist/immutable';
 
-export const getBounds = (state) => {
-  const bounds = state.get('bounds');
-  return {
-    xMin: bounds.minX,
-    xMax: bounds.maxX,
-    yMin: bounds.minY,
-    yMax: bounds.maxY
+var boundsCache = new WeakMap();
+
+const updateBounds = (bounds, newItem) => ({
+  xMin: bounds.xMin < newItem.x ? bounds.xMin : newItem.x,
+  xMax: bounds.xMax > newItem.x ? bounds.xMax : newItem.x,
+  yMin: bounds.yMin < newItem.y ? bounds.yMin : newItem.y,
+  yMax: bounds.yMax > newItem.y ? bounds.yMax : newItem.y,
+});
+
+const combineBounds = (bounds, newBounds) =>
+  updateBounds(
+    updateBounds(bounds, {x: newBounds.xMin, y: newBounds.yMin}),
+    {x: newBounds.xMax, y: newBounds.yMax}
+  );
+
+const getBoundsFromNode = (node, offset, walkFunc) => {
+  if (boundsCache.has(node)) {
+    return boundsCache.get(node);
+  }
+  var bounds = {
+    xMin: Infinity,
+    xMax: -Infinity,
+    yMin: Infinity,
+    yMax: -Infinity
   };
-};
+  walkFunc((elem, offset, walkFunc) => {
+      if (walkFunc) {
+        bounds = combineBounds(bounds, getBoundsFromNode(elem, offset, walkFunc));
+      } else {
+        bounds = updateBounds(bounds, elem)
+      }
+    },
+    node, offset
+  );
+  boundsCache.set(node, bounds);
+  return bounds;
+}
+
+const getBoundsFromList = (list) => {
+  var bounds = {
+    xMin: Infinity,
+    xMax: -Infinity,
+    yMin: Infinity,
+    yMax: -Infinity
+  };
+  list.walkTree((elem, offset, walkFunc) => {
+    if (walkFunc) {
+      bounds = combineBounds(bounds, getBoundsFromNode(elem, offset, walkFunc));
+    } else {
+      bounds = updateBounds(bounds, elem)
+    }
+  });
+  return bounds;
+}
+
+export const getBounds = (state) => {
+  const bounds = getBoundsFromList(state.get('chartItems'));
+  return bounds;
+}
 
 const initialState = Map({
   chartItems: List(),
   prevItem: {
     x: 0,
     y: 100
-  },
-  bounds: {
-    minX: Infinity,
-    maxX: -Infinity,
-    minY: Infinity,
-    maxY: -Infinity
   }
-});
-
-const updateBounds = (bounds, newItem) => ({
-  minX: bounds.minX < newItem.x ? bounds.minX : newItem.x,
-  maxX: bounds.maxX > newItem.x ? bounds.maxX : newItem.x,
-  minY: bounds.minY < newItem.y ? bounds.minY : newItem.y,
-  maxY: bounds.maxY > newItem.y ? bounds.maxY : newItem.y,
 });
 
 const genItem = (prevItem) => ({
@@ -40,16 +77,13 @@ const genItem = (prevItem) => ({
 const addItems = (state, count) => {
   var item = state.get('prevItem');
   var items = state.get('chartItems');
-  var updatedBounds = state.get('bounds');
   for (var i = 0; i < count; ++i) {
     item = genItem(item);
     items = items.push(item);
-    updatedBounds = updateBounds(updatedBounds, item);
   };
   return Map({
     chartItems: items,
-    prevItem: item,
-    bounds: updatedBounds
+    prevItem: item
   });
 };
 
