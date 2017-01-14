@@ -14,7 +14,8 @@ export const zoomConnector = connectAdvanced(
       {
         yMin: 0 <= yMin ? 0 : yMin,
         yMax: 200 >= yMax ? 200 : yMax,
-        xMin, xMax,
+        xMin: xMin === Infinity ? 0 : xMin,
+        xMax: xMax === -Infinity ? 10 : xMax,
         onWheel: (e) => {
           e.preventDefault();
           if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
