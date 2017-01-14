@@ -5,6 +5,7 @@ import { Provider, connect } from 'react-redux';
 
 import ControlButton from './ControlButton';
 import { store } from './store';
+import { setupDataStream } from './dataSource/dataSource'
 
 import { zoomConnector } from './zooming/ZoomConnector';
 
@@ -32,5 +33,7 @@ class App extends Component {
     );
   }
 }
+
+setupDataStream(store.dispatch);
 
 export default App;
