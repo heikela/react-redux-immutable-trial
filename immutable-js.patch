@@ -14,18 +14,18 @@ index 675babf..c884685 100644
 @@ -148,6 +148,10 @@ export class List extends IndexedCollection {
      return setListBounds(this, 0, size);
    }
- 
+
 +  walkTree(fn) {
 +    return walkTree(this, fn);
 +  }
 +
    // @pragma Iteration
- 
+
    slice(begin, end) {
 @@ -288,6 +292,36 @@ class VNode {
    }
  }
- 
+
 +function walkTree(list, fn) {
 +  walkNodeImpl(fn, list._root, 0, list._level, list._origin, list._capacity);
 +  walkNodeImpl(fn, list._tail, getTailOffset(list._capacity), 0, list._origin, list._capacity);
@@ -56,9 +56,8 @@ index 675babf..c884685 100644
 +    }
 +  }
 +}
- 
- var DONE = {};
- 
--- 
-2.8.1
 
+ var DONE = {};
+
+--
+2.8.1
