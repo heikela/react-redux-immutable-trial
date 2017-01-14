@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import {Map} from '../../immutable-js/dist/immutable';
 
 const ZOOM_FACTOR = 0.25;
 const SCROLL_FACTOR = 0.002;
