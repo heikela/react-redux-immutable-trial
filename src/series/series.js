@@ -1,6 +1,5 @@
 import { List, Map } from '../../immutable-js/dist/immutable';
-
-var boundsCache = new WeakMap();
+import cachedUnorderedReduce from '../util/listUtil';
 
 const updateBounds = (bounds, newItem) => ({
   xMin: bounds.xMin < newItem.x ? bounds.xMin : newItem.x,
@@ -15,50 +14,16 @@ const combineBounds = (bounds, newBounds) =>
     {x: newBounds.xMax, y: newBounds.yMax}
   );
 
-const getBoundsFromNode = (node, offset, walkFunc) => {
-  if (boundsCache.has(node)) {
-    return boundsCache.get(node);
-  }
-  var bounds = {
-    xMin: Infinity,
-    xMax: -Infinity,
-    yMin: Infinity,
-    yMax: -Infinity
-  };
-  walkFunc((elem, offset, walkFunc) => {
-      if (walkFunc) {
-        bounds = combineBounds(bounds, getBoundsFromNode(elem, offset, walkFunc));
-      } else {
-        bounds = updateBounds(bounds, elem)
-      }
-    },
-    node, offset
-  );
-  boundsCache.set(node, bounds);
-  return bounds;
-}
+const boundsForEmptySet = {
+  xMin: Infinity,
+  xMax: -Infinity,
+  yMin: Infinity,
+  yMax: -Infinity
+};
 
-const getBoundsFromList = (list) => {
-  var bounds = {
-    xMin: Infinity,
-    xMax: -Infinity,
-    yMin: Infinity,
-    yMax: -Infinity
-  };
-  list.walkTree((elem, offset, walkFunc) => {
-    if (walkFunc) {
-      bounds = combineBounds(bounds, getBoundsFromNode(elem, offset, walkFunc));
-    } else {
-      bounds = updateBounds(bounds, elem)
-    }
-  });
-  return bounds;
-}
+const getBoundsFromList = cachedUnorderedReduce(updateBounds, combineBounds, boundsForEmptySet);
 
-export const getBounds = (state) => {
-  const bounds = getBoundsFromList(state.get('chartItems'));
-  return bounds;
-}
+export const getBounds = (state) => getBoundsFromList(state.get('chartItems'));
 
 const initialState = Map({
   chartItems: List(),
