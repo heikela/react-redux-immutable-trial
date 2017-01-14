@@ -23,7 +23,10 @@ const axisTickOptions = [
   1,
   0.5,
   0.2,
-  0.1
+  0.1,
+  0.01,
+  0.001,
+  0.0001
 ];
 
 const getTickSize = (distance) => {
