@@ -18,7 +18,6 @@ class Graph extends Component {
     const {width, height} = this.props;
     const {x1, y1, x2, y2} = this.props;
     const {xMin, xMax, yMin, yMax} = this.props;
-    const items = this.props.chartItems;
 
     const viewBox = '' + x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
 

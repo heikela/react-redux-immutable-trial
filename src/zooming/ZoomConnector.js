@@ -12,7 +12,6 @@ export const zoomConnector = connectAdvanced(
     const {xMin, xMax} = getZoomBounds(ownProps.zooming(state), seriesBounds);
     return Object.assign({}, ownProps,
       {
-        chartItems: series.get('chartItems'),
         yMin: 0 <= yMin ? 0 : yMin,
         yMax: 200 >= yMax ? 200 : yMax,
         xMin, xMax,
