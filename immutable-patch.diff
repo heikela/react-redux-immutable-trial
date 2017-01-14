@@ -1,0 +1,64 @@
+From d938ffb9bde3b4e61d160c7126273a3a5b359e4a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Heikela=CC=88?= <mikko.heikela@gmail.com>
+Date: Fri, 23 Dec 2016 00:23:23 +0000
+Subject: [PATCH] Walk List VNodes
+
+---
+ src/List.js | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+diff --git a/src/List.js b/src/List.js
+index 675babf..c884685 100644
+--- a/src/List.js
++++ b/src/List.js
+@@ -148,6 +148,10 @@ export class List extends IndexedCollection {
+     return setListBounds(this, 0, size);
+   }
+ 
++  walkTree(fn) {
++    return walkTree(this, fn);
++  }
++
+   // @pragma Iteration
+ 
+   slice(begin, end) {
+@@ -288,6 +292,36 @@ class VNode {
+   }
+ }
+ 
++function walkTree(list, fn) {
++  walkNodeImpl(fn, list._root, 0, list._level, list._origin, list._capacity);
++  walkNodeImpl(fn, list._tail, getTailOffset(list._capacity), 0, list._origin, list._capacity);
++}
++
++function walkNodeGen(level, left, right) {
++  return function walkNode(fn, node, offset) {
++    walkNodeImpl(fn, node, offset, level, left, right);
++  }
++}
++
++function walkNodeImpl(fn, node, offset, level, left, right) {
++  var array = node && node.array;
++  var from = offset > left ? 0 : (left - offset) >> level;
++  var to = ((right - offset) >> level) + 1;
++  if (to > SIZE) {
++    to = SIZE;
++  }
++  for (var i = from; i < to; ++i) {
++    const itemOffset = offset + (i << level);
++    const nextLevel = level - SHIFT;
++    if (itemOffset < right && array && array[i]) {
++      if (nextLevel < 0) {
++        fn(array[i], itemOffset);
++      } else {
++        fn(array[i], itemOffset, walkNodeGen(nextLevel, left, right));
++      }
++    }
++  }
++}
+ 
+ var DONE = {};
+ 
+-- 
+2.8.1
+
