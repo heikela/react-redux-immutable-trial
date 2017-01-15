@@ -1,4 +1,5 @@
 import { List, Map } from '../../immutable-js/dist/immutable';
+import { RECOLOR, ADD_ITEMS } from './seriesActions';
 import cachedUnorderedReduce from '../util/listUtil';
 
 const updateBounds = (bounds, newItem) => ({
@@ -64,8 +65,8 @@ const recolor = (state) => {
 
 export const series = (state = initialState, action) => {
   switch (action.type) {
-    case 'addItems': return addItems(state, action.payload);
-    case 'recolor': return recolor(state);
+    case ADD_ITEMS: return addItems(state, action.payload);
+    case RECOLOR: return recolor(state);
     default: return state;
   }
 };

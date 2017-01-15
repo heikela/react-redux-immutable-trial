@@ -1,3 +1,5 @@
+import { RECOLOR, ADD_ITEMS } from '../series/seriesActions';
+
 const initialState = {
   prevTiming: window.performance.now(),
   count: 0
@@ -16,8 +18,8 @@ const logPerformance = (state) => {
 
 export const timing = (state = initialState, action) => {
   switch (action.type) {
-    case 'recolor': // fall through
-    case 'addItems': {
+    case RECOLOR: // fall through
+    case ADD_ITEMS: {
       const newCount = state.count + 1;
       const stateWithUpdatedCount = {prevTiming: state.prevTiming, count: newCount};
       if (newCount % 1000 === 0) {
