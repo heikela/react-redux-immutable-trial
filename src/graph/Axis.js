@@ -61,7 +61,15 @@ export const YAxis = ({x, width, yMin, yMax, yMinVal, yMaxVal}) => {
   return <g stroke="black" fill="black" strokeWidth="0.5">
     <line x1={x} y1={yMin} x2={x} y2={yMax} />
       {tickElements}
-  </g>
+  </g>;
+};
+YAxis.propTypes = {
+  x: React.PropTypes.number.isRequired,
+  width: React.PropTypes.number.isRequired,
+  yMin: React.PropTypes.number.isRequired,
+  yMax: React.PropTypes.number.isRequired,
+  yMinVal: React.PropTypes.number.isRequired,
+  yMaxVal: React.PropTypes.number.isRequired,
 };
 
 export const XAxis = ({y, width, xMin, xMax, xMinVal, xMaxVal}) => {
@@ -74,9 +82,17 @@ export const XAxis = ({y, width, xMin, xMax, xMinVal, xMaxVal}) => {
       </text>
     </g>
   ));
+  XAxis.propTypes = {
+    y: React.PropTypes.number.isRequired,
+    width: React.PropTypes.number.isRequired,
+    xMin: React.PropTypes.number.isRequired,
+    xMax: React.PropTypes.number.isRequired,
+    xMinVal: React.PropTypes.number.isRequired,
+    xMaxVal: React.PropTypes.number.isRequired,
+  };
 
   return <g stroke="black" fill="black" strokeWidth="0.5">
     <line x1={xMin} y1={y} x2={xMax} y2={y} />
       {tickElements}
-  </g>
+  </g>;
 };

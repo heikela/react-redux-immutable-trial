@@ -46,7 +46,7 @@ const addItems = (state, count) => {
   for (var i = 0; i < count; ++i) {
     item = genItem(item);
     items = items.push(item);
-  };
+  }
   return Map({
     chartItems: items,
     prevItem: item
@@ -56,12 +56,14 @@ const addItems = (state, count) => {
 const recolor = (state) => {
   const items = state.get('chartItems');
   const length = items.size;
-  if (length < 10) return state;
+  if (length < 10) {
+    return state;
+  }
   const index = Math.floor(Math.random() * (length - 2)) + 1;
   const item = items.get(index);
   const updatedItem = {...item, c: item.c === 'red' ? 'blue' : 'red'};
   return state.setIn(['chartItems', index], updatedItem);
-}
+};
 
 export const series = (state = initialState, action) => {
   switch (action.type) {

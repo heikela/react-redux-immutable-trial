@@ -7,5 +7,11 @@ const Button = ({action, children, dispatch}) => {
   </button>
   );
 };
+Button.propTypes = {
+  action: React.PropTypes.shape({
+    type: React.PropTypes.string.isRequired
+  }).isRequired,
+  dispatch: React.PropTypes.func.isRequired
+};
 
 export default connect()(Button); // adds dispatch to props

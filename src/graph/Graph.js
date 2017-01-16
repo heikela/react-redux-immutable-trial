@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 
 import { XAxis, YAxis } from './Axis';
 
@@ -10,7 +9,7 @@ const calculateTransform = (outer1, outer2, inner1, inner2) => {
   return {
     factor: factor,
     constant: outer1 - inner1 * factor
-  }
+  };
 };
 
 class Graph extends Component {
@@ -29,15 +28,28 @@ class Graph extends Component {
     return (
       <svg width={width} height={height} viewBox={viewBox} pointerEvents="all"
         onWheel={this.props.onWheel}>
-        <rect x={x1} y={y1} width={x2-x1} height={y2-y1} fill="blue" visibility="hidden"/>
+        <rect x={x1} y={y1} width={x2 - x1} height={y2 - y1} fill="blue" visibility="hidden"/>
         <YAxis x={x1} width={10} yMin={y1} yMax={y2} yMinVal={yMin} yMaxVal={yMax} />
         <XAxis y={y1} width={10} xMin={x1} xMax={x2} xMinVal={xMin} xMaxVal={xMax} />
         <g stroke="none" fill="red" transform={transform}>
           {this.props.children}
         </g>
       </svg>
-    )
+    );
   }
 }
+Graph.propTypes = {
+  width: React.PropTypes.number.isRequired,
+  height: React.PropTypes.number.isRequired,
+  x1: React.PropTypes.number.isRequired,
+  y1: React.PropTypes.number.isRequired,
+  x2: React.PropTypes.number.isRequired,
+  y2: React.PropTypes.number.isRequired,
+  xMin: React.PropTypes.number.isRequired,
+  yMin: React.PropTypes.number.isRequired,
+  xMax: React.PropTypes.number.isRequired,
+  yMax: React.PropTypes.number.isRequired,
+  onWheel: React.PropTypes.func
+};
 
 export default Graph;

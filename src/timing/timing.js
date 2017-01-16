@@ -9,7 +9,7 @@ const logPerformance = (state) => {
   const seconds = (window.performance.now() - state.prevTiming) / 1000;
   const operations = state.count;
   const operationsPerSecond = operations / seconds;
-  console.log(operations + " operations in " + seconds + " s = " + operationsPerSecond + " operations/s");
+  console.log(operations + ' operations in ' + seconds + ' s = ' + operationsPerSecond + ' operations/s');
   return ({
     prevTiming: window.performance.now(),
     count: 0
@@ -31,4 +31,4 @@ export const timing = (state = initialState, action) => {
     case 'logPerformance': return logPerformance(state);
     default: return state;
   }
-}
+};

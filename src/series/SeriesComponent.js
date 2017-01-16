@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {List} from '../../immutable-js/dist/immutable'; // for proptypes
 
 class SeriesSegment extends Component {
   render() {
@@ -9,16 +10,25 @@ class SeriesSegment extends Component {
     return (<g key={offset}>
       {elements}
     </g>);
-  };
+  }
 
   shouldComponentUpdate(newProps) {
     return newProps.node !== this.props.node;
   }
+}
+SeriesSegment.propTypes = {
+  node: React.PropTypes.object.isRequired,
+  offset: React.PropTypes.number.isRequired,
+  walkFunc: React.PropTypes.func.isRequired
 };
 
 const SeriesElement = (props) => {
   const node = props.node;
   return (<circle cx={node.x} cy={node.y} r="1" fill={node.c} key={props.offset} />);
+};
+SeriesElement.propTypes = {
+  node: React.PropTypes.object.isRequired,
+  offset: React.PropTypes.number.isRequired
 };
 
 const seriesElementsFromWalk = (walkFunc) => {
@@ -28,7 +38,7 @@ const seriesElementsFromWalk = (walkFunc) => {
     result.push(<ElementType node={item} walkFunc={walkFunc} offset={offset} key={offset}/>);
   });
   return result;
-}
+};
 
 const seriesElementsFromList = (list) =>
   seriesElementsFromWalk((fn) => list.walkTree(fn));
@@ -41,3 +51,6 @@ export const SeriesComponent = ({items}) => (
     {seriesElementsFromList(items)}
   </g>
 );
+SeriesComponent.propTypes = {
+  items: React.PropTypes.instanceOf(List)
+};

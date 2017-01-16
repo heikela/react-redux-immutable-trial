@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <Graph width="600" height="600" x1={0} y1={0} x2={200} y2={200}
+          <Graph width={600} height={600} x1={0} y1={0} x2={200} y2={200}
             series={(state => state.get('series'))}
             zooming={(state => state.get('zooming'))}
           >

@@ -1,5 +1,5 @@
-import cachedUnorderedReduce from './listUtil.js'
-import {List, Map, Range} from '../../immutable-js/dist/immutable'
+import cachedUnorderedReduce from './listUtil.js';
+import {List, Map, Range} from '../../immutable-js/dist/immutable';
 
 describe('cachedUnorderedReduce', () => {
   it('should behave like reduce', () => {
@@ -26,13 +26,13 @@ describe('cachedUnorderedReduce', () => {
       const updatedCalls = previousCalls.push([a, b]);
       combineOneCalls = combineOneCalls.set(currentOperation, updatedCalls);
       return a + b;
-    }
+    };
     const combineMany = (a, b) => {
       const previousCalls = combineManyCalls.get(currentOperation, List());
       const updatedCalls = previousCalls.push([a, b]);
       combineManyCalls = combineManyCalls.set(currentOperation, updatedCalls);
       return a + b;
-    }
+    };
     const sum = cachedUnorderedReduce(combineOne, combineMany, 0);
 
     // Check results and caching behaviour in a few simple scenarios

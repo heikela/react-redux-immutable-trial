@@ -71,7 +71,7 @@ const clampToRightEdge = (state, bounds) => {
   } else {
     return state;
   }
-}
+};
 
 const clampToLeftEdge = (state, bounds) => {
   const overflow = bounds.xMin - state.get('xMin');
@@ -89,7 +89,7 @@ const clampToLeftEdge = (state, bounds) => {
   } else {
     return state;
   }
-}
+};
 
 const updateByFollowing = (state, bounds) => {
   const followLeft = state.get('followingLeftEdge');
@@ -97,7 +97,7 @@ const updateByFollowing = (state, bounds) => {
   if (followLeft && followRight) {
     return state
       .set('xMin', bounds.xMin)
-      .set('xMax', bounds.xMax)
+      .set('xMax', bounds.xMax);
   } else if (followLeft) {
     const deltaX = bounds.xMin - state.get('xMin');
     return state
@@ -111,7 +111,7 @@ const updateByFollowing = (state, bounds) => {
   } else {
     return state;
   }
-}
+};
 
 const clampToEdges = (state, bounds) => clampToLeftEdge(clampToRightEdge(state, bounds), bounds);
 
@@ -129,8 +129,8 @@ export const getZoomBounds = (state, bounds) => {
     xMax: updated.get('xMax'),
     yMin: updated.get('yMin'),
     yMax: updated.get('yMax')
-  }
-}
+  };
+};
 
 export const zooming = (state = initialState, action) => {
   switch (action.type) {
@@ -149,6 +149,6 @@ export const zooming = (state = initialState, action) => {
       const initial = updateByFollowing(state, bounds);
       return clampToEdges(scrollBy(releaseEdges(initial), action.payload.amount * SCROLL_FACTOR * width(state)), bounds);
     }
-    default: return state
+    default: return state;
   }
 };

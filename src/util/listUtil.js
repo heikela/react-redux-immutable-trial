@@ -20,14 +20,14 @@ const cachedUnorderedReduce = (combineOne, combineMany, initial) => {
         if (walkFunc) {
           result = combineMany(result, reduceNode(elem, offset, walkFunc));
         } else {
-          result = combineOne(result, elem)
+          result = combineOne(result, elem);
         }
       },
       node, offset
     );
     resultCache.set(node, result);
     return result;
-  }
+  };
 
   const reduceList = (list) => {
     var result = initial;
@@ -35,13 +35,13 @@ const cachedUnorderedReduce = (combineOne, combineMany, initial) => {
       if (walkFunc) {
         result = combineMany(result, reduceNode(elem, offset, walkFunc));
       } else {
-        result = combineOne(result, elem)
+        result = combineOne(result, elem);
       }
     });
     return result;
-  }
+  };
 
   return reduceList;
-}
+};
 
 export default cachedUnorderedReduce;
