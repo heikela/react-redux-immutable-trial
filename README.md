@@ -24,11 +24,11 @@ In this repository I've experimented with building a UI based on the
 above-mentioned technologies, but with a small patch to Immutable List that
 allows client code to walk through the VNodes used internally.
 
-As a test case I use time series -like data. The code appends new items into a
-series rapidly, which also updating some existing elements. I have included
+As a test case I use time-series-like data. The code appends new items into a
+series rapidly while also updating some existing elements. I have included
 (mouse wheel based) horizontal zooming and scrolling functionality both to make
-it easy to explore the performance impact of off-viewport graphics, and to find
-out how the scrolling logic can be factored into its own components.
+it easy to explore the performance impact of off-viewport graphics, and to
+explore how the scrolling logic can be factored into its own components.
 
 The ability to walk the VNode structure is used both for creating React
 components that represent the data in the list graphically, and for calculating
@@ -42,18 +42,18 @@ using a `WeakMap` for memoizing the calculation with the VNode as the key.
 
 ## Lessons learned
 
-The above approach results in a fairly nice performance. On a laptop, updates to
+The above approach results in fairly nice performance. On a laptop, updates to
 a List containing tens of thousands of items, represented on the screen with an
 SVG image with a circle for each item are fast if only a small part of the whole
 series is visible. If a larger portion is visible, rendering and painting starts
 to get slow even though the Render code in the client app as well as React
-Reconciliation would be quick.
+reconciliation are still quick.
 
 Immutable List is not the perfect data structure for the demonstrated case. This
 is evidenced by the noticeable pauses when the number of elements exceeds 2^10
-and 2^15, which means adding a new level to the VNode tree, and consequently a
-failure to recognise similarities between old and new trees in React
-reconciliation.
+(1024) and 2^15 (approx. 32.7k), which means adding a new level to the VNode
+tree, and consequently a failure to recognise similarities between old and new
+trees in React reconciliation.
 
 Opening Redux devtools slows things down very significantly - not surprising as
 they diff the large state structures without being aware of the underlying
@@ -68,3 +68,8 @@ needs to be cloned, patched and built. A script, `setup-immutable.sh`, is
 provided for this purpose.
 
 Any benchmarking should naturally be done using production builds.
+
+You can also check out a pre-built
+[demo](https://heikela.github.io/react-redux-immutable-trial), but don't forget
+it running in a background tab as it will start using considerable memory and
+CPU time within minutes.
