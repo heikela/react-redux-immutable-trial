@@ -5,8 +5,9 @@ import { Provider, connect } from 'react-redux';
 
 import ControlButton from './ControlButton';
 import { store } from './store';
-import { setupDataStream } from './dataSource/dataSource'
+import { setupDataStream } from './dataSource/dataSource';
 
+import { addItems } from './series/seriesActions';
 import { zoomConnector } from './zooming/ZoomConnector';
 
 const Graph = zoomConnector(GraphComponent);
@@ -14,6 +15,7 @@ const SeriesContainer = connect(state => ({items: state.getIn(['series', 'chartI
 
 class App extends Component {
   render() {
+    const addItemsAction = addItems(1000);
     return (
       <Provider store={store}>
         <div className="App">
@@ -24,7 +26,7 @@ class App extends Component {
             <SeriesContainer/>
           </Graph>
           <p>
-            <ControlButton action={{type:'addItems', payload:1000}} >
+            <ControlButton action={addItemsAction} >
               Add a thousand points
             </ControlButton>
           </p>

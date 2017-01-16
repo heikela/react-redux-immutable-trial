@@ -1,5 +1,5 @@
-export const ADD_ITEMS = 'series/addItems';
-export const RECOLOR = 'series/recolor';
+export const ADD_ITEMS = 'series/ADD_ITEMS';
+export const RECOLOR = 'series/RECOLOR';
 
 export const addItems = (count) => ({
   type: ADD_ITEMS,
