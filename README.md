@@ -10,11 +10,10 @@ production use.
 
 ## Challenge
 
-The persistent nature of List from [Immutable]
-(http://facebook.github.io/immutable-js/) allows efficient updates through
-structural sharing between old and updated versions. If the List is used in a
-Redux store, and React components updated by connecting to the store, this
-efficiency is lost because the public API of Immutable List does not expose the
+The persistent nature of List from [Immutable](http://facebook.github.io/immutable-js/)
+allows efficient updates through structural sharing between old and updated versions.
+If the List is used in a Redux store, and React components updated by connecting to the store,
+this efficiency is lost because the public API of Immutable List does not expose the
 underlying structural sharing, leading to unnecessary copying of data and
 updates to React components.
 
