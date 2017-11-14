@@ -60,11 +60,11 @@ sharing.
 
 ## Instructions
 
-This experiment is created with [create-react-app]
-(https://github.com/facebookincubator/create-react-app), so the usual commands
-`npm start`, `npm run build` and `npm test` work. To get started, immutable-js
-needs to be cloned, patched and built. A script, `setup-immutable.sh`, is
-provided for this purpose.
+This experiment is created with
+[create-react-app](https://github.com/facebookincubator/create-react-app),
+so the usual commands `npm start`, `npm run build` and `npm test` work.
+To get started, immutable-js needs to be cloned, patched and built.
+A script, `setup-immutable.sh`, is provided for this purpose.
 
 Any benchmarking should naturally be done using production builds.
 
