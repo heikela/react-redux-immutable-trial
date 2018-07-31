@@ -58,6 +58,42 @@ Opening Redux devtools slows things down very significantly - not surprising as
 they diff the large state structures without being aware of the underlying
 sharing.
 
+## results
+
+Figure 1. shows how using the internal structure of Immutable.List results in
+a dramatic performance improvement. Moreover, by looking at Chrome devtools,
+we find out that javascript execution is the limiting factor in the naive
+implementation (using the public interface of Immutable.List) already with a low
+number of items in the series (Figure 2.), whereas browser native paint
+work and in the case where many items are visible also render work dominates
+the workload when using the internal structure of Immutable.List across
+React and Redux (Figures 3 & 4.).
+
+![timing results](results/result.png)
+Figure 1. Timing results. Measuring how long it takes to do 100 updates of
+an SVG time series graph as a function of existing items in the series.
+Measurements on a MacBook Air (13-inch, Early 2015) using Chrome Version
+67.0.3396.99 (Official Build) (64-bit). The scenarios include an approach
+where the internal trie structure of the immutable list is used at React level
+and one where the public interface of immutable list is used (losing track of
+structural sharing between updated versions of the list). Both are measured
+in the scenario where all items in the time series remain in view, as well
+as in a scrolling scenario where only the latest 1000 items remain in view.
+
+![using the public interface, javascript work dominates](results/small-count.png)
+Figure 2. Using the public interface of Immutable.List, the javascript work
+grows quickly and dominates paint and render work for a low number of items.
+
+![using the internal structure, native browser work domintates](results/large-count.png)
+Figure 3. Using the internal structure of Immutable.List, the javascript work
+remains manageable, but browser native paint and render work grow when
+the number of items grows large.
+
+![using the internal structure, native browser work domintates](results/large-count-limited-view.png)
+Figure 4. When only a small number of items in a large time series remain in view,
+the render workload remains low in addition to the javascript workload,
+but paint work still starts to slow things down.
+
 ## Instructions
 
 This experiment is created with
