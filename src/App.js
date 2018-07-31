@@ -14,6 +14,7 @@ const Graph = zoomConnector(GraphComponent);
 const SeriesContainer = connect(
   state => ({items: state.getIn(['series', 'chartItems'])})
 )(/naive/.test(window.location.href) ? NaiveSeriesComponent : SeriesComponent);
+const autoScrollAfter = /scroll/.test(window.location.href) ? 100 : 0
 
 class App extends Component {
   render() {
@@ -38,6 +39,6 @@ class App extends Component {
   }
 }
 
-setupDataStream(store.dispatch);
+setupDataStream(store.dispatch, autoScrollAfter);
 
 export default App;

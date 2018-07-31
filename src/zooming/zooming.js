@@ -12,38 +12,6 @@ const initialState = Map({
   followingLeftEdge: true
 });
 
-export const zoomOut = (amount, bounds) => ({
-  type: 'ZOOM_OUT',
-  payload: {
-    amount,
-    bounds
-  }
-});
-
-export const zoomIn = (amount, bounds) => ({
-  type: 'ZOOM_IN',
-  payload: {
-    amount,
-    bounds
-  }
-});
-
-export const scrollLeft = (amount, bounds) => ({
-  type: 'SCROLL',
-  payload: {
-    amount: -amount,
-    bounds
-  }
-});
-
-export const scrollRight = (amount, bounds) => ({
-  type: 'SCROLL',
-  payload: {
-    amount,
-    bounds
-  }
-});
-
 const scrollBy = (state, amount) => {
   return state
     .set('xMin', state.get('xMin') + amount)
@@ -148,6 +116,9 @@ export const zooming = (state = initialState, action) => {
       const bounds = action.payload.bounds;
       const initial = updateByFollowing(state, bounds);
       return clampToEdges(scrollBy(releaseEdges(initial), action.payload.amount * SCROLL_FACTOR * width(state)), bounds);
+    }
+    case 'RELESE_LEFT_EDGE': {
+      return releaseLeftEdge(state.set('xMin', 0.0).set('xMax', 1000,0))
     }
     default: return state;
   }

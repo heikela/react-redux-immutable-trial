@@ -2,7 +2,9 @@ import { connectAdvanced } from 'react-redux';
 
 import { getBounds } from '../series/series';
 
-import { zoomIn, zoomOut, scrollLeft, scrollRight, getZoomBounds } from './zooming';
+import { zoomIn, zoomOut, scrollLeft, scrollRight } from './zoomActions';
+
+import { getZoomBounds } from './zooming';
 
 export const zoomConnector = connectAdvanced(
   dispatch => (state, ownProps) => {
