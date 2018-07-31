@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GraphComponent from './graph/Graph';
-import { SeriesComponent } from './series/SeriesComponent';
+import { SeriesComponent, NaiveSeriesComponent } from './series/SeriesComponent';
 import { Provider, connect } from 'react-redux';
 
 import ControlButton from './ControlButton';
@@ -11,7 +11,9 @@ import { addItems } from './series/seriesActions';
 import { zoomConnector } from './zooming/ZoomConnector';
 
 const Graph = zoomConnector(GraphComponent);
-const SeriesContainer = connect(state => ({items: state.getIn(['series', 'chartItems'])}))(SeriesComponent);
+const SeriesContainer = connect(
+  state => ({items: state.getIn(['series', 'chartItems'])})
+)(/naive/.test(window.location.href) ? NaiveSeriesComponent : SeriesComponent);
 
 class App extends Component {
   render() {

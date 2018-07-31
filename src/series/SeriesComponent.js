@@ -54,3 +54,12 @@ export const SeriesComponent = ({items}) => (
 SeriesComponent.propTypes = {
   items: React.PropTypes.instanceOf(List)
 };
+
+export const NaiveSeriesComponent = ({items}) => (
+  <g>
+    {items.map((item, idx) => (<SeriesElement key={idx} node={item} />))}
+  </g>
+)
+NaiveSeriesComponent.propTypes = {
+  items: React.PropTypes.instanceOf(List)
+};
