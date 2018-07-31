@@ -22,7 +22,7 @@ export const timing = (state = initialState, action) => {
     case ADD_ITEMS: {
       const newCount = state.count + 1;
       const stateWithUpdatedCount = {prevTiming: state.prevTiming, count: newCount};
-      if (newCount % 1000 === 0) {
+      if (newCount % 100 === 0) {
         return logPerformance(stateWithUpdatedCount);
       } else {
         return stateWithUpdatedCount;
