@@ -23,18 +23,23 @@ The way the sharing works is illustrated in Figures 1. and 2.
 
 ![List VNode structure](images/Immutable_List.svg)
 
-Figure 1. The overall structure of an Immutable.List object. Each VNode contains
-up to 32 pointers to VNodes at a deeper level or values held in the list in the case of the leaf VNodes.
+*Figure 1. The overall structure of an Immutable.List object. Each VNode contains
+up to 32 pointers to VNodes at a deeper level or values held in the list in the case of the leaf VNodes.*
 
 ![Sharing of VNodes after List update](images/Sharing_After_Update.svg)
 
-Figure 2. The overall structure of an Immutable.List object. Each VNode contains
-up to 32 pointers to VNodes at a deeper level or values held in the list in the case of the leaf VNodes.
+*Figure 2. After creating an updated version of an existing List. The old and new
+version share much of their structure.*
 
 If the List is used in a Redux store, and React components updated by connecting to the store,
 this efficiency is lost because the public API of Immutable List does not expose the
 underlying structural sharing, leading to expensive updates to React components,
 as illustrated in Figure 3.
+
+![Control flow and optimisation opportunity](images/Flow.svg)
+
+*Figure 3. The public API of Immutable.List does not allow React to components
+to update only the changed parts of a visualisation of an Immutable collection.*
 
 ## Approach
 
