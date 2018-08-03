@@ -1,21 +1,40 @@
 # React Redux Immutable SVG experiment
 
-This is an experiment in how using the internal structure of Immutable List
-affects performance of rendering to SVG in a
-[React](https://facebook.github.io/react/) &
-[Redux](https://github.com/reactjs/redux) app.
+[Immutable](http://facebook.github.io/immutable-js/) is a javascript library
+that offers efficient [persistent TODO FIX LINK](https://wikipedia.org/wiki/Persistent_(Data_Structure\))
+Lists, Maps and other related data structures. Immutable is often used in
+implementing dynamic collections as part of a [Redux](https://github.com/reactjs/redux)
+ store, e.g. in a [React](https://facebook.github.io/react/) app.
+In this context, the potential performance benefits of persistent data structures
+are easily lost. In this repository I experiment on how exposing the internal
+structure of Immutable.List affects rendering performance of a time series
+displayed as SVG, as well as other computations over the list as it is being
+continuously updated. Using the internal structure allows much more efficient
+updates of the SVG graph as well as efficient bounds computations after updates.
 
-This is not an app or a library and nothing in this repository is intended for
-production use.
+*This is not an app or a library and nothing in this repository is intended for
+production use.*
 
 ## Challenge
 
 The persistent nature of List from [Immutable](http://facebook.github.io/immutable-js/)
 allows efficient updates through structural sharing between old and updated versions.
+The way the sharing works is illustrated in Figures 1. and 2.
+
+![List VNode structure](images/Immutable_List.svg)
+
+Figure 1. The overall structure of an Immutable.List object. Each VNode contains
+up to 32 pointers to VNodes at a deeper level or values held in the list in the case of the leaf VNodes.
+
+![Sharing of VNodes after List update](images/Sharing_After_Update.svg)
+
+Figure 2. The overall structure of an Immutable.List object. Each VNode contains
+up to 32 pointers to VNodes at a deeper level or values held in the list in the case of the leaf VNodes.
+
 If the List is used in a Redux store, and React components updated by connecting to the store,
 this efficiency is lost because the public API of Immutable List does not expose the
-underlying structural sharing, leading to unnecessary copying of data and
-updates to React components.
+underlying structural sharing, leading to expensive updates to React components,
+as illustrated in Figure 3.
 
 ## Approach
 
@@ -23,8 +42,8 @@ In this repository I've experimented with building a UI based on the
 above-mentioned technologies, but with a small patch to Immutable List that
 allows client code to walk through the VNodes used internally.
 
-As a test case I use time-series-like data. The code appends new items into a
-series rapidly while also updating some existing elements. I have included
+As a test case I use time-series-like data. The code rapidly appends new items into a
+series while also updating some existing elements. I have included
 (mouse wheel based) horizontal zooming and scrolling functionality both to make
 it easy to explore the performance impact of off-viewport graphics, and to
 explore how the scrolling logic can be factored into its own components.
@@ -60,17 +79,17 @@ sharing.
 
 ## results
 
-Figure 1. shows how using the internal structure of Immutable.List results in
+Figure 4. shows how using the internal structure of Immutable.List results in
 a dramatic performance improvement. Moreover, by looking at Chrome devtools,
 we find out that javascript execution is the limiting factor in the naive
 implementation (using the public interface of Immutable.List) already with a low
-number of items in the series (Figure 2.), whereas browser native paint
+number of items in the series (Figure 5.), whereas browser native paint
 work and in the case where many items are visible also render work dominates
 the workload when using the internal structure of Immutable.List across
-React and Redux (Figures 3 & 4.).
+React and Redux (Figures 6 & 7.).
 
 ![timing results](results/result.png)
-Figure 1. Timing results. Measuring how long it takes to do 100 updates of
+Figure 4. Timing results. Measuring how long it takes to do 100 updates of
 an SVG time series graph as a function of existing items in the series.
 Measurements on a MacBook Air (13-inch, Early 2015) using Chrome Version
 67.0.3396.99 (Official Build) (64-bit). The scenarios include an approach
@@ -81,16 +100,16 @@ in the scenario where all items in the time series remain in view, as well
 as in a scrolling scenario where only the latest 1000 items remain in view.
 
 ![using the public interface, javascript work dominates](results/small-count.png)
-Figure 2. Using the public interface of Immutable.List, the javascript work
+Figure 5. Using the public interface of Immutable.List, the javascript work
 grows quickly and dominates paint and render work for a low number of items.
 
 ![using the internal structure, native browser work domintates](results/large-count.png)
-Figure 3. Using the internal structure of Immutable.List, the javascript work
+Figure 6. Using the internal structure of Immutable.List, the javascript work
 remains manageable, but browser native paint and render work grow when
 the number of items grows large.
 
 ![using the internal structure, native browser work domintates](results/large-count-limited-view.png)
-Figure 4. When only a small number of items in a large time series remain in view,
+Figure 7. When only a small number of items in a large time series remain in view,
 the render workload remains low in addition to the javascript workload,
 but paint work still starts to slow things down.
 
