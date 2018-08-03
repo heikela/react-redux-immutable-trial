@@ -1,7 +1,7 @@
 # React Redux Immutable SVG experiment
 
 [Immutable](http://facebook.github.io/immutable-js/) is a javascript library
-that offers efficient [persistent TODO FIX LINK](https://wikipedia.org/wiki/Persistent_(Data_Structure\))
+that offers efficient [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure)
 Lists, Maps and other related data structures. Immutable is often used in
 implementing dynamic collections as part of a [Redux](https://github.com/reactjs/redux)
  store, e.g. in a [React](https://facebook.github.io/react/) app.
@@ -94,7 +94,7 @@ the workload when using the internal structure of Immutable.List across
 React and Redux (Figures 6 & 7.).
 
 ![timing results](results/result.png)
-Figure 4. Timing results. Measuring how long it takes to do 100 updates of
+*Figure 4. Timing results. Measuring how long it takes to do 100 updates of
 an SVG time series graph as a function of existing items in the series.
 Measurements on a MacBook Air (13-inch, Early 2015) using Chrome Version
 67.0.3396.99 (Official Build) (64-bit). The scenarios include an approach
@@ -102,21 +102,21 @@ where the internal trie structure of the immutable list is used at React level
 and one where the public interface of immutable list is used (losing track of
 structural sharing between updated versions of the list). Both are measured
 in the scenario where all items in the time series remain in view, as well
-as in a scrolling scenario where only the latest 1000 items remain in view.
+as in a scrolling scenario where only the latest 1000 items remain in view.*
 
 ![using the public interface, javascript work dominates](results/small-count.png)
-Figure 5. Using the public interface of Immutable.List, the javascript work
-grows quickly and dominates paint and render work for a low number of items.
+*Figure 5. Using the public interface of Immutable.List, the javascript work
+grows quickly and dominates paint and render work for a low number of items.*
 
 ![using the internal structure, native browser work domintates](results/large-count.png)
-Figure 6. Using the internal structure of Immutable.List, the javascript work
+*Figure 6. Using the internal structure of Immutable.List, the javascript work
 remains manageable, but browser native paint and render work grow when
-the number of items grows large.
+the number of items grows large.*
 
 ![using the internal structure, native browser work domintates](results/large-count-limited-view.png)
-Figure 7. When only a small number of items in a large time series remain in view,
-the render workload remains low in addition to the javascript workload,
-but paint work still starts to slow things down.
+*Figure 7. When only a small number of items in a large time series remain in view,
+the paint workload remains low in addition to the javascript workload,
+but render work still starts to slow things down.*
 
 ## Instructions
 
