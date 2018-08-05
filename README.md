@@ -82,7 +82,7 @@ Opening Redux devtools slows things down very significantly - not surprising as
 they diff the large state structures without being aware of the underlying
 sharing.
 
-## results
+## Results
 
 Figure 4. shows how using the internal structure of Immutable.List results in
 a dramatic performance improvement. Moreover, by looking at Chrome devtools,
@@ -98,15 +98,15 @@ React and Redux (Figures 6 & 7.).
 an SVG time series graph as a function of existing items in the series.
 Measurements on a MacBook Air (13-inch, Early 2015) using Chrome Version
 67.0.3396.99 (Official Build) (64-bit). The scenarios include an approach
-where the internal trie structure of the immutable list is used at React level
+where the internal tree structure of the immutable list is used at React level
 and one where the public interface of immutable list is used (losing track of
 structural sharing between updated versions of the list). Both are measured
 in the scenario where all items in the time series remain in view, as well
 as in a scrolling scenario where only the latest 1000 items remain in view.*
 
 ![using the public interface, javascript work dominates](results/small-count.png)
-*Figure 5. Using the public interface of Immutable.List, the javascript work
-grows quickly and dominates paint and render work for a low number of items.*
+*Figure 5. For a small number of items, the a high FPS is achieved, and the javascript work,
+render work and paint work are all comparable.*
 
 ![using the internal structure, native browser work domintates](results/large-count.png)
 *Figure 6. Using the internal structure of Immutable.List, the javascript work
